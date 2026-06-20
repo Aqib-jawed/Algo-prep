@@ -73,7 +73,7 @@ export function DashboardClient() {
               <p className="mt-2 text-sm text-secondary">{currentWeek.weeklyGoal}</p>
             </div>
             <Link href="/problems" className="rounded-card border border-border px-3 py-2 text-sm text-secondary hover:border-accent/50 hover:text-primary">Open sheet</Link>
-          </div>
+          </div> 
           <div className="mt-5 space-y-3">
             {[dailyChallenge, ...recommended.filter((problem) => problem.id !== dailyChallenge.id)].slice(0, 3).map((problem) => (
               <a key={problem.id} href={`https://leetcode.com/problems/${problem.slug}/`} target="_blank" rel="noreferrer" className="flex flex-wrap items-center gap-3 rounded-card border border-border bg-base p-3 hover:border-accent/50">
