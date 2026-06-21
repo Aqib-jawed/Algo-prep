@@ -236,18 +236,20 @@ function FlowEdgeLine({ edge, active, dashOffset }: { edge: FEdge; active: boole
   return (
     <g>
       <line
-        x1={edge.x1} y1={edge.y1} x2={edge.x2} y2={edge.y2}
+  x1={edge.fromX}
+  y1={edge.fromY}
+  x2={edge.toX}
+  y2={edge.toY}
         stroke={color}
         strokeWidth={active ? 2 : 1.2}
         strokeDasharray={active ? "5 3" : "none"}
         strokeDashoffset={active ? dashOffset : 0}
         markerEnd={active ? "url(#arrow-active)" : "url(#arrow-idle)"}
-        style={{ transition: "stroke 0.2s, stroke-width 0.2s" }}
       />
       {edge.label && (
         <text
-          x={(edge.x1 + edge.x2) / 2 + 3}
-          y={(edge.y1 + edge.y2) / 2 - 4}
+          x={(edge.fromX + edge.toX) / 2 + 3}
+          y={(edge.fromY + edge.toY) / 2 - 4}
           fontSize={8} fill={active ? "#f97316" : "#444"} textAnchor="middle"
           style={{ fontFamily: "monospace" }}
         >
