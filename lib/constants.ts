@@ -1,11 +1,11 @@
 import {
   BarChart3,
-  BookOpen,
   Brain,
   CalendarDays,
   GitBranch,
   Home,
   ListChecks,
+  Play,
   Target
 } from "lucide-react";
 
@@ -14,6 +14,7 @@ export const navItems = [
   { href: "/roadmap", label: "Roadmap", icon: CalendarDays },
   { href: "/patterns", label: "Patterns", icon: GitBranch },
   { href: "/problems", label: "Problems", icon: ListChecks },
+  { href: "/visualise", label: "Visualiser", icon: Play, isNew: true },
   { href: "/strategy", label: "Strategy", icon: Brain },
   { href: "/interview", label: "Interview", icon: Target },
   { href: "/progress", label: "Progress", icon: BarChart3 }

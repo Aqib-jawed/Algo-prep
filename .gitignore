@@ -11,3 +11,5 @@ pnpm-debug.log*
 .vercel
 *.tsbuildinfo
 .agents
+
+.vercel

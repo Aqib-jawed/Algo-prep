@@ -27,7 +27,23 @@ export function Sidebar() {
               )}
             >
               <Icon size={17} />
-              <span>{item.label}</span>
+              <span className="flex items-center gap-1.5">
+                {item.label}
+                {"isNew" in item && item.isNew && (
+                  <span
+                    style={{
+                      fontSize: 9,
+                      background: "#1a0a00",
+                      color: "#f97316",
+                      borderRadius: 4,
+                      padding: "1px 5px",
+                      marginLeft: 2
+                    }}
+                  >
+                    NEW
+                  </span>
+                )}
+              </span>
             </Link>
           );
         })}
