@@ -47,7 +47,7 @@ export function DashboardClient() {
     <div className="space-y-6">
       <header className="rounded-card border border-border bg-surface p-6">
         <p className="label">Dashboard</p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-[0]">Let's Begin The DSA Journey</h1>
+        <h1>Let&apos;s start preparing for interviews</h1>
         <p className="mt-2 text-secondary">Week {store.currentWeek} of 16 · {currentWeek.theme}</p>
       </header>
 
