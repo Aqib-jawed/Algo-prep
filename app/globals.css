@@ -2,7 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Light mode (default) ─── */
 :root {
+  --bg-base: #f8f8f8;
+  --bg-surface: #ffffff;
+  --bg-elevated: #f0f0f0;
+  --bg-border: #e5e5e5;
+  --accent: #f97316;
+  --accent-dim: #fff3e8;
+  --accent-glow: rgba(249, 115, 22, 0.10);
+  --text-primary: #111111;
+  --text-secondary: #555555;
+  --text-muted: #999999;
+}
+
+/* ─── Dark mode ─── */
+.dark {
   --bg-base: #0d0d0d;
   --bg-surface: #141414;
   --bg-elevated: #1c1c1c;
@@ -20,8 +35,15 @@
 }
 
 html {
-  color-scheme: dark;
   scroll-behavior: smooth;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html:not(.dark) {
+  color-scheme: light;
 }
 
 body {
@@ -32,6 +54,7 @@ body {
   font-family: var(--font-source-sans), "Source Sans 3", sans-serif;
   font-size: 14px;
   line-height: 1.7;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 a {
@@ -56,12 +79,12 @@ select {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: var(--bg-elevated);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #303030;
-  border: 2px solid #0a0a0a;
+  background: var(--bg-border);
+  border: 2px solid var(--bg-elevated);
   border-radius: 999px;
 }
 
@@ -92,18 +115,23 @@ select {
 }
 
 .prose-dsa code {
-  background: #0a0a0a;
+  background: var(--bg-elevated);
   border: 1px solid var(--bg-border);
   border-radius: 4px;
-  color: #f7c37a;
+  color: #f97316;
   font-family: var(--font-jetbrains), "JetBrains Mono", monospace;
   font-size: 12px;
   padding: 1px 5px;
 }
 
+.dark .shiki,
+.dark .shiki span {
+  background: #0a0a0a !important;
+}
+
 .shiki,
 .shiki span {
-  background: #0a0a0a !important;
+  background: var(--bg-elevated) !important;
 }
 
 @keyframes toast-in {
@@ -115,4 +143,13 @@ select {
     opacity: 1;
     transform: translateY(-8px);
   }
+}
+
+@keyframes theme-fade {
+  from { opacity: 0.8; }
+  to   { opacity: 1; }
+}
+
+body {
+  animation: theme-fade 0.15s ease;
 }

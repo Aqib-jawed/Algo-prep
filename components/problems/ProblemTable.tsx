@@ -15,6 +15,9 @@ const difficultyRank = { Easy: 1, Medium: 2, Hard: 3 };
 const frequencyRank = { "Very High": 4, High: 3, Medium: 2, Niche: 1 };
 
 function ProblemTableInner({ initialPattern, hideFilters = false }: { initialPattern?: string; hideFilters?: boolean }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
   const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
   const debounced = useDebounceSearch(query, 200);
@@ -72,6 +75,16 @@ function ProblemTableInner({ initialPattern, hideFilters = false }: { initialPat
 
   function togglePattern(slug: string) {
     setSelectedPatterns((current) => current.includes(slug) ? current.filter((item) => item !== slug) : [...current, slug]);
+  }
+
+  if (!mounted) {
+    return (
+      <div className="space-y-2 py-4">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className="h-12 animate-pulse rounded-card bg-elevated" style={{ opacity: 1 - i * 0.1 }} />
+        ))}
+      </div>
+    );
   }
 
   return (

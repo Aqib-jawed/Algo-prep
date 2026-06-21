@@ -1,12 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { Pattern } from "@/data/patterns";
 import { ProblemTable } from "@/components/problems/ProblemTable";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { PatternTag } from "@/components/ui/PatternTag";
 import { Badge } from "@/components/ui/Badge";
-
+import { LanguageSelector, Language } from "@/components/ui/LanguageSelector";
 import { useProgressStore } from "@/store/useProgressStore";
 
 function lineNotes(code: string) {
@@ -24,8 +25,27 @@ function lineNotes(code: string) {
 export function PatternDetailClient({ pattern }: { pattern: Pattern }) {
   const completed = useProgressStore((state) => state.patternsCompleted.includes(pattern.slug));
   const markPatternComplete = useProgressStore((state) => state.markPatternComplete);
+  const [lang, setLang] = useState<Language>("java");
   const notes = lineNotes(pattern.javaTemplate);
-  const toc = ["Overview", "Cheat Code", "Invariant", "Java Template", "Complexity", "Variants", "Mistakes", "Problems"];
+  const toc = ["Overview", "Cheat Code", "Invariant", "Template", "Complexity", "Variants", "Mistakes", "Problems"];
+
+  function getTemplate(l: Language): string {
+    switch (l) {
+      case "python":     return pattern.pythonTemplate || "# Template coming soon";
+      case "cpp":        return pattern.cppTemplate || "// Template coming soon";
+      case "c":          return pattern.cTemplate || "// Template coming soon";
+      case "javascript": return pattern.javascriptTemplate || "// Template coming soon";
+      default:           return pattern.javaTemplate;
+    }
+  }
+
+  function getLangId(l: Language): string {
+    if (l === "cpp") return "cpp";
+    if (l === "c") return "c";
+    if (l === "javascript") return "javascript";
+    if (l === "python") return "python";
+    return "java";
+  }
 
   return (
     <div className="grid gap-6 lg:grid-cols-[160px_1fr]">
@@ -65,22 +85,27 @@ export function PatternDetailClient({ pattern }: { pattern: Pattern }) {
           <div className="mt-3 rounded-card border border-border bg-surface p-4 font-mono text-sm text-secondary">{pattern.coreInvariant}</div>
         </section>
 
-        <section id="java-template" className="space-y-4">
-          <h2 className="text-lg font-semibold tracking-[0]">Java Template</h2>
-          <CodeBlock code={pattern.javaTemplate} language="java" />
-          <div className="overflow-hidden rounded-card border border-border">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-surface"><tr><th className="px-3 py-2 label">Line range</th><th className="px-3 py-2 label">What it does</th></tr></thead>
-              <tbody>
-                {notes.map((note) => (
-                  <tr key={`${note.range}-${note.text}`} className="border-t border-border">
-                    <td className="px-3 py-2 font-mono text-xs text-muted">{note.range}</td>
-                    <td className="px-3 py-2 text-secondary">{note.text}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <section id="template" className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-lg font-semibold tracking-[0]">Code Template</h2>
+            <LanguageSelector value={lang} onChange={setLang} />
           </div>
+          <CodeBlock code={getTemplate(lang)} language={getLangId(lang)} />
+          {lang === "java" && notes.length > 0 && (
+            <div className="overflow-hidden rounded-card border border-border">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-surface"><tr><th className="px-3 py-2 label">Line</th><th className="px-3 py-2 label">What it does</th></tr></thead>
+                <tbody>
+                  {notes.map((note) => (
+                    <tr key={`${note.range}-${note.text}`} className="border-t border-border">
+                      <td className="px-3 py-2 font-mono text-xs text-muted">{note.range}</td>
+                      <td className="px-3 py-2 text-secondary">{note.text}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </section>
 
         <section id="complexity" className="card p-5">
