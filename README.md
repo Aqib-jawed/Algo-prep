@@ -18,7 +18,7 @@
 
 <br />
 
-![Dashboard Preview](https://algo-prep-chi.vercel.app/og-preview.png)
+![Dashboard Preview](https://algo-prep-chi.vercel.app/preview.png)
 
 </div>
 
