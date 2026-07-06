@@ -1,10 +1,17 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
+}
+
+enum Role {
+  STUDENT
+  FACULTY
+  ADMIN
 }
 
 model User {
@@ -14,13 +21,74 @@ model User {
   emailVerified    DateTime?
   image            String?
   password         String?   @db.Text
+  role             Role      @default(STUDENT)
   createdAt        DateTime  @default(now())
+
   accounts         Account[]
   sessions         Session[]
+  solvedProblems   SolvedProblem[]
+  starredProblems  StarredProblem[]
+  patternProgress  PatternProgress[]
+  dailyActivity    DailyActivity[]
+  settings         UserSettings?
+}
+
+model SolvedProblem {
+  id               String    @id @default(cuid())
+  userId           String
+  problemId        Int
+  solvedAt         DateTime  @default(now())
+  timeSpentSeconds Int?
+  user             User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, problemId])
+  @@index([userId])
+}
+
+model StarredProblem {
+  id        String @id @default(cuid())
+  userId    String
+  problemId Int
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, problemId])
+  @@index([userId])
+}
+
+model PatternProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  patternSlug String
+  completedAt DateTime @default(now())
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, patternSlug])
+  @@index([userId])
+}
+
+model DailyActivity {
+  id     String @id @default(cuid())
+  userId String
+  date   String
+  count  Int @default(0)
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId])
+}
+
+model UserSettings {
+  userId         String @id
+  currentWeek    Int @default(1)
+  targetDate     DateTime?
+  weeklyGoal     Int @default(15)
+  streak         Int @default(0)
+  lastActiveDate String @default("")
+  user           User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
-  id                String  @id @default(cuid())
+  id                String @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -32,15 +100,15 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-  user              User    @relation(fields:[userId], references:[id], onDelete:Cascade)
+  user              User @relation(fields:[userId], references:[id], onDelete:Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
+  id           String @id @default(cuid())
+  sessionToken String @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields:[userId], references:[id], onDelete:Cascade)
+  user         User @relation(fields:[userId], references:[id], onDelete:Cascade)
 }

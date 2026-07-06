@@ -1,16 +1,41 @@
 import { NextResponse } from "next/server";
 import { PATTERNS } from "@/data/patterns";
 import type { VisualisationResponse } from "@/types/visualiser";
+import { requireAuth } from "@/lib/auth";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { cacheKey, getCached, setCached } from "@/lib/visualise-cache";
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "llama-3.3-70b-versatile";
+const RATE_LIMIT = 6;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
 
 export async function POST(req: Request) {
   try {
+    const user = await requireAuth();
+    if (!user) {
+      return NextResponse.json({ error: "Sign in to use the visualiser." }, { status: 401 });
+    }
+
     const { problemTitle, problemDescription, userInput, patternSlug } = await req.json();
 
     if (!problemTitle?.trim() || !userInput?.trim()) {
       return NextResponse.json({ error: "Problem title and input are required." }, { status: 400 });
+    }
+
+    const key = cacheKey(problemTitle, userInput, patternSlug);
+    const cached = getCached(key);
+    if (cached) {
+      return NextResponse.json(cached);
+    }
+
+    const { allowed, retryAfterMs } = checkRateLimit(`visualise:${user.id}`, RATE_LIMIT, RATE_WINDOW_MS);
+    if (!allowed) {
+      const seconds = Math.ceil((retryAfterMs ?? 0) / 1000);
+      return NextResponse.json(
+        { error: `Too many visualisations right now. Try again in ${seconds}s.` },
+        { status: 429 }
+      );
     }
 
     const pattern = PATTERNS.find((p) => p.slug === patternSlug);
@@ -130,6 +155,7 @@ Return the JSON object only — no other text.`;
       return NextResponse.json({ error: "No steps generated. Try rephrasing the problem or input." }, { status: 500 });
     }
 
+    setCached(key, parsed);
     return NextResponse.json(parsed);
   } catch (err) {
     console.error("Visualise route unexpected error:", err);

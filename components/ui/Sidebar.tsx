@@ -2,11 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { Users } from "lucide-react";
 import { navItems } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const isFaculty = session?.user?.role === "FACULTY" || session?.user?.role === "ADMIN";
+
+  const items = isFaculty ? [...navItems, { href: "/faculty", label: "Faculty", icon: Users }] : navItems;
 
   return (
     <aside className="fixed bottom-0 left-0 top-16 z-30 hidden w-64 border-r border-border bg-base px-3 py-5 lg:block">
@@ -14,7 +20,7 @@ export function Sidebar() {
         <div className="label">Navigation</div>
       </div>
       <nav className="space-y-1">
-        {navItems.map((item) => {
+        {items.map((item) => {
           const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
           const Icon = item.icon;
           return (

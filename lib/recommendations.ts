@@ -54,8 +54,8 @@ export function getReadinessScore(
   const mediumHard = PROBLEMS.filter((problem) => problem.difficulty === "Medium" || problem.difficulty === "Hard");
   const solvedMediumHard = mediumHard.filter((problem) => solved.has(problem.id));
   const breakdown = {
-    problems: Math.min(100, (solvedIds.length / 160) * 100),
-    patterns: Math.min(100, (patternsCompleted.length / 25) * 100),
+    problems: Math.min(100, (solvedIds.length / PROBLEMS.length) * 100),
+    patterns: Math.min(100, (patternsCompleted.length / PATTERNS.length) * 100),
     streak: Math.min(streak, 30) / 30 * 100,
     difficulty: mediumHard.length ? solvedMediumHard.length / mediumHard.length * 100 : 0
   };

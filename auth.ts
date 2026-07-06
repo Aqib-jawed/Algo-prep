@@ -37,7 +37,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         )
         if (!isValid) return null
 
-        return { id: user.id, name: user.name, email: user.email, image: user.image }
+        return { id: user.id, name: user.name, email: user.email, image: user.image, role: user.role }
       }
     }),
   ],
@@ -46,11 +46,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     session({ session, token, user }) {
       if (session.user) {
         session.user.id = token?.sub ?? user?.id
+        session.user.role = (token?.role as string) ?? 'STUDENT'
       }
       return session
     },
-    jwt({ token, user }) {
-      if (user) token.sub = user.id
+    async jwt({ token, user }) {
+      if (user) {
+        token.sub = user.id
+        const dbUser = await db.user.findUnique({ where: { id: user.id }, select: { role: true } })
+        token.role = dbUser?.role ?? 'STUDENT'
+      }
       return token
     },
   },

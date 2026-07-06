@@ -22,6 +22,19 @@ function checkMilestone(prev: number, next: number) {
 
 type Difficulty = "Easy" | "Medium" | "Hard";
 
+type ServerProgressSnapshot = {
+  solvedProblems: number[];
+  starredProblems: number[];
+  patternsCompleted: string[];
+  dailyLog: Record<string, number>;
+  solveTime: Record<number, number>;
+  currentWeek: number;
+  targetDate: string | null;
+  weeklyGoal: number;
+  lastActiveDate: string;
+  streak: number;
+};
+
 type ProgressState = {
   solvedProblems: number[];
   starredProblems: number[];
@@ -41,12 +54,25 @@ type ProgressState = {
   setTargetDate: (date: string) => void;
   setCurrentWeek: (week: number) => void;
   setWeeklyGoal: (n: number) => void;
+  hydrateFromServer: (data: ServerProgressSnapshot) => void;
   getStreak: () => number;
   getTodayCount: () => number;
   getWeekCount: () => number;
   getPatternMastery: (slug: string, problems?: Problem[]) => number;
   getAvgSolveTime: (difficulty: Difficulty, problems?: Problem[]) => number;
 };
+
+// Fire-and-forget sync to the server. Local state above is already updated
+// optimistically, so a failed or skipped call here (offline, logged out —
+// a 401 is expected for anonymous visitors) just means this one change
+// doesn't reach the server until the next successful sync.
+function syncMutation(body: Record<string, unknown>) {
+  fetch("/api/progress", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  }).catch(() => {});
+}
 
 function todayKey(date = new Date()) {
   return date.toISOString().slice(0, 10);
@@ -94,7 +120,7 @@ export const useProgressStore = create<ProgressState>()(
       lastActiveDate: "",
       streak: 0,
 
-      markSolved: (id) =>
+      markSolved: (id) => {
         set((state) => {
           const alreadySolved = state.solvedProblems.includes(id);
           const prevCount = state.solvedProblems.length;
@@ -110,34 +136,60 @@ export const useProgressStore = create<ProgressState>()(
           const milestone = checkMilestone(prevCount, solvedProblems.length);
           if (milestone) showGlobalToast(`${milestone.emoji} ${milestone.label}`, "milestone");
           return { solvedProblems, dailyLog, streak, lastActiveDate: today };
-        }),
+        });
+        syncMutation({ type: "markSolved", problemId: id });
+      },
 
-      unmarkSolved: (id) =>
+      unmarkSolved: (id) => {
         set((state) => ({
           solvedProblems: state.solvedProblems.filter((solvedId) => solvedId !== id)
-        })),
+        }));
+        syncMutation({ type: "unmarkSolved", problemId: id });
+      },
 
-      toggleStarred: (id) =>
+      toggleStarred: (id) => {
         set((state) => ({
           starredProblems: state.starredProblems.includes(id)
             ? state.starredProblems.filter((starredId) => starredId !== id)
             : [...state.starredProblems, id]
-        })),
+        }));
+        syncMutation({ type: "toggleStarred", problemId: id });
+      },
 
-      markPatternComplete: (slug) =>
+      markPatternComplete: (slug) => {
+        let changed = false;
         set((state) => {
           if (state.patternsCompleted.includes(slug)) return state;
+          changed = true;
           const pattern = PATTERNS.find((item) => item.slug === slug);
           showGlobalToast(`Pattern complete: ${pattern?.name ?? slug}`, "success");
           return { patternsCompleted: [...state.patternsCompleted, slug] };
-        }),
+        });
+        if (changed) syncMutation({ type: "markPatternComplete", patternSlug: slug });
+      },
 
-      logSolveTime: (id, seconds) =>
-        set((state) => ({ solveTime: { ...state.solveTime, [id]: Math.max(0, Math.round(seconds)) } })),
+      logSolveTime: (id, seconds) => {
+        const clamped = Math.max(0, Math.round(seconds));
+        set((state) => ({ solveTime: { ...state.solveTime, [id]: clamped } }));
+        syncMutation({ type: "logSolveTime", problemId: id, seconds: clamped });
+      },
 
-      setTargetDate: (date) => set({ targetDate: date || null }),
-      setCurrentWeek: (week) => set({ currentWeek: Math.max(1, Math.min(16, Math.round(week))) }),
-      setWeeklyGoal: (n) => set({ weeklyGoal: Math.max(1, Math.min(100, Math.round(n))) }),
+      setTargetDate: (date) => {
+        set({ targetDate: date || null });
+        syncMutation({ type: "setTargetDate", date: date || null });
+      },
+      setCurrentWeek: (week) => {
+        const clamped = Math.max(1, Math.min(16, Math.round(week)));
+        set({ currentWeek: clamped });
+        syncMutation({ type: "setCurrentWeek", week: clamped });
+      },
+      setWeeklyGoal: (n) => {
+        const clamped = Math.max(1, Math.min(100, Math.round(n)));
+        set({ weeklyGoal: clamped });
+        syncMutation({ type: "setWeeklyGoal", goal: clamped });
+      },
+
+      hydrateFromServer: (data) => set(data),
 
       getStreak: () => streakFromLog(get().dailyLog),
       getTodayCount: () => get().dailyLog[todayKey()] ?? 0,

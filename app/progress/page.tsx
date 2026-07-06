@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ProgressClient } from "@/components/progress/ProgressClient";
+import { FacultyVisibilityNotice } from "@/components/faculty/FacultyVisibilityNotice";
 
 export const metadata: Metadata = {
   title: "Progress Tracker | Algo Prep",
@@ -7,5 +8,10 @@ export const metadata: Metadata = {
 };
 
 export default function ProgressPage() {
-  return <ProgressClient />;
+  return (
+    <div className="space-y-4">
+      <FacultyVisibilityNotice />
+      <ProgressClient />
+    </div>
+  );
 }
