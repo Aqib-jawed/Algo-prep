@@ -1,15 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+import Editor from "@monaco-editor/react";
 import { ProgrammingLanguage } from "@/types/interview";
 import { PageSkeleton } from "@/components/ui/PageSkeleton";
-
-// Dynamic import with SSR disabled to ensure lazy loading on client side
-const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
-  ssr: false,
-  loading: () => <PageSkeleton />,
-});
 
 interface CodeEditorProps {
   language: ProgrammingLanguage;
@@ -28,7 +22,12 @@ export function CodeEditor({
   theme,
   readOnly = false,
 }: CodeEditorProps) {
+  const [mounted, setMounted] = useState(false);
   const [editorTheme, setEditorTheme] = useState("vs-dark");
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // Monaco has standard themes: 'vs-dark' and 'light'
@@ -48,9 +47,13 @@ export function CodeEditor({
     }
   };
 
+  if (!mounted) {
+    return <PageSkeleton />;
+  }
+
   return (
     <div className="flex-1 w-full relative min-h-[480px] border border-border bg-base overflow-hidden rounded-b-lg">
-      <MonacoEditor
+      <Editor
         height="100%"
         width="100%"
         language={getMonacoLanguage(language)}
