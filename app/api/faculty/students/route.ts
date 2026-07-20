@@ -13,12 +13,8 @@ export async function GET(req: Request) {
   const company = companySlug ? companySheets.find((c) => c.slug === companySlug) : null;
 
   const students = await db.user.findMany({
-    where: { role: "STUDENT" },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      solvedProblems: { select: { problemId: true } },
+    where: { role: { equals: "STUDENT" } },
+    include: {
       patternProgress: { select: { patternSlug: true } },
       settings: { select: { streak: true, lastActiveDate: true } }
     },
@@ -26,9 +22,9 @@ export async function GET(req: Request) {
   });
 
   const rows = students.map((student) => {
-    const solvedIds = student.solvedProblems.map((s) => s.problemId);
-    const patternSlugs = student.patternProgress.map((p) => p.patternSlug);
-    const streak = student.settings?.streak ?? 0;
+    const solvedIds = ((student as any).solvedProblems ?? []).map((s: any) => s.problemId);
+    const patternSlugs = (student as any).patternProgress?.map((p: any) => p.patternSlug) ?? [];
+    const streak = (student as any).settings?.streak ?? 0;
     const { score, label } = getReadinessScore(solvedIds, streak, patternSlugs);
 
     let companyReadiness: { solved: number; total: number; pct: number } | undefined;
@@ -50,7 +46,7 @@ export async function GET(req: Request) {
       streak,
       readinessScore: score,
       readinessLabel: label,
-      lastActiveDate: student.settings?.lastActiveDate ?? "",
+      lastActiveDate: (student as any).settings?.lastActiveDate ?? "",
       companyReadiness
     };
   });

@@ -21,7 +21,12 @@ export function InterviewClient() {
   })).sort((a, b) => b.pct - a.pct).slice(0, 12), []);
   const top = [...PROBLEMS].filter((problem) => problem.frequency === "Very High").sort((a, b) => b.companies.length - a.companies.length || a.id - b.id).slice(0, 50);
   const gems = PROBLEMS.filter((problem) => !problem.isNeetCode150 && problem.frequency === "High").slice(0, 15);
-  const lists = { "3 weeks": top.slice(0, 40), "6 weeks": PROBLEMS.sort((a, b) => rank[b.frequency] - rank[a.frequency]).slice(0, 80), "12 weeks": PROBLEMS.slice(0, 130) };
+  const lists = { 
+    "3 weeks": top.slice(0, 40), 
+    // TODO: Populate these lists once real 6-week and 12-week target data sets are verified and added
+    // "6 weeks": PROBLEMS.sort((a, b) => rank[b.frequency] - rank[a.frequency]).slice(0, 80), 
+    // "12 weeks": PROBLEMS.slice(0, 130) 
+  };
 
   const companyKey = tab === "Startups" ? "zepto" : tab.toLowerCase();
   const company = COMPANY_DATA[companyKey];

@@ -1,5 +1,6 @@
 "use client";
-
+import { IterationTable } from "@/components/visualiser/IterationTable";
+import { CodeWalkthrough } from "@/components/visualiser/CodeWalkthrough";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { AlertCircle, Play } from "lucide-react";
 import { ArrayRenderer } from "@/components/visualiser/ArrayRenderer";

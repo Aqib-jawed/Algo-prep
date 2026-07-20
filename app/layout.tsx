@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import KeyboardShortcuts from "@/components/ui/KeyboardShortcuts";
 import { ToastProvider } from "@/components/ui/Toast";
 import Providers from "@/components/Providers";
+import { auth } from "@/auth";
+import { cn } from "@/lib/utils";
 import "./globals.css";
 
 const sourceSans = Source_Sans_3({
@@ -29,7 +31,10 @@ export const viewport: Viewport = {
   themeColor: "#0d0d0d"
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const session = await auth();
+  const isLoggedIn = !!session;
+
   return (
     <html lang="en" className="dark">
       <body className={`${sourceSans.variable} ${jetBrains.variable}`}>
@@ -39,8 +44,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <div className="min-h-screen bg-base text-primary">
                 <Navbar />
                 <div className="mx-auto flex w-full max-w-[1440px]">
-                  <Sidebar />
-                  <main className="min-w-0 flex-1 px-4 pb-10 pt-20 md:px-6 lg:ml-64 lg:px-8">
+                  {isLoggedIn && <Sidebar />}
+                  <main className={cn(
+                    "min-w-0 flex-1 px-4 pb-10 pt-20 md:px-6 lg:px-8",
+                    isLoggedIn && "lg:ml-64"
+                  )}>
                     {children}
                     <KeyboardShortcuts showButton={false} />
                   </main>

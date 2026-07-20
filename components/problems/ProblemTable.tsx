@@ -26,7 +26,7 @@ function ProblemTableInner({ initialPattern, hideFilters = false }: { initialPat
   const [status, setStatus] = useState("All");
   const [frequency, setFrequency] = useState("All");
   const [company, setCompany] = useState("All");
-  const [quick, setQuick] = useState<"None" | "NeetCode" | "Blind75" | "Indian">("None");
+  const [quick, setQuick] = useState<"None" | "NeetCode" | "Blind75" | "Indian" | "Striver">("None");
   const [sort, setSort] = useState<"#" | "Frequency" | "Difficulty">("#");
   const [page, setPage] = useState(1);
   const solvedProblems = useProgressStore((state) => state.solvedProblems);
@@ -56,7 +56,8 @@ function ProblemTableInner({ initialPattern, hideFilters = false }: { initialPat
         quick === "None" ||
         (quick === "NeetCode" && problem.isNeetCode150) ||
         (quick === "Blind75" && problem.isBlind75) ||
-        (quick === "Indian" && problem.isIndianUnicorn);
+        (quick === "Indian" && problem.isIndianUnicorn) ||
+        (quick === "Striver" && (problem.isStriverA2Z || problem.source === "striver-a2z"));
       const matchesWeek = !weekFilter || problem.weekInRoadmap === weekFilter;
       return matchesPattern && matchesDifficulty && matchesStatus && matchesFrequency && matchesCompany && matchesQuick && matchesWeek;
     });
@@ -107,6 +108,7 @@ function ProblemTableInner({ initialPattern, hideFilters = false }: { initialPat
               {companies.map((item) => <option key={item}>{item}</option>)}
             </select>
             {[
+              ["Striver", "⚡ Striver A2Z (474)"],
               ["NeetCode", "★ NeetCode 150"],
               ["Blind75", "Blind 75"],
               ["Indian", "Indian Unicorns"]

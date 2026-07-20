@@ -1,6 +1,6 @@
 "use client";
 
-import type { ArrayCell, PointerState } from "@/types/visualiser";
+import type { ArrayCell, Pointer } from "@/types/visualiser";
 
 const CELL_SIZE = 52;
 const CELL_GAP = 6;
@@ -25,7 +25,7 @@ function cellStyle(highlight?: ArrayCell["highlight"]) {
 
 type Props = {
   cells: ArrayCell[];
-  pointers?: PointerState[];
+  pointers?: Pointer[];
   windowStart?: number;
   windowEnd?: number;
 };

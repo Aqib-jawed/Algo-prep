@@ -1,5 +1,6 @@
 import { PATTERNS } from "@/data/patterns";
-import { PROBLEMS } from "@/data/problems";
+import { PROBLEMS, problemById } from "@/data/problems";
+import { COMPANY_DATA } from "@/data/companies";
 import { ROADMAP_WEEKS } from "@/data/roadmap";
 import type { Pattern, Problem } from "@/types";
 
@@ -69,4 +70,16 @@ export function getPatternMasteryFromIds(patternSlug: string, solvedIds: number[
   if (!related.length) return { solved: 0, total: 0, pct: 0 };
   const solved = related.filter((problem) => solvedIds.includes(problem.id)).length;
   return { solved, total: related.length, pct: Math.round((solved / related.length) * 100) };
+}
+
+export function getMockInterviewProblem(solvedIds: number[], companySlug?: string | null): Problem | null {
+  const solved = new Set(solvedIds);
+  const pool = companySlug
+    ? (COMPANY_DATA[companySlug]?.topProblems ?? [])
+        .map((id) => problemById[id])
+        .filter((problem): problem is Problem => !!problem && !solved.has(problem.id))
+    : PROBLEMS.filter((problem) => (problem.difficulty === "Medium" || problem.difficulty === "Hard") && !solved.has(problem.id));
+
+  if (pool.length === 0) return null;
+  return pool[Math.floor(Math.random() * pool.length)];
 }

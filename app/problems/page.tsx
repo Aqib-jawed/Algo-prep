@@ -5,7 +5,7 @@ import { PageSkeleton } from "@/components/ui/PageSkeleton";
 
 export const metadata: Metadata = {
   title: "Problem Sheet | Algo Prep",
-  description: "Filterable 160-question LeetCode sheet with timers, hints, starred problems, and progress tracking."
+  description: "Filterable 500+ LeetCode & Striver A2Z DSA Sheet with timers, hints, starred problems, and progress tracking."
 };
 
 export default function ProblemsPage() {
@@ -13,8 +13,8 @@ export default function ProblemsPage() {
     <div className="space-y-6">
       <header>
         <p className="label">Master question sheet</p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-[0]">160 curated LeetCode problems with live filters</h1>
-        <p className="mt-2 max-w-3xl text-secondary">Search, filter, time, star, solve, and review hints without leaving the prep surface.</p>
+        <h1 className="mt-2 text-2xl font-semibold tracking-[0]">500+ curated LeetCode & Striver A2Z problems with live filters</h1>
+        <p className="mt-2 max-w-3xl text-secondary">Search, filter, time, star, solve, and review hints across all Striver A2Z DSA sheet questions & core patterns.</p>
       </header>
       <Suspense fallback={<PageSkeleton />}>
         <ProblemTable />

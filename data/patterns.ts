@@ -221,13 +221,7 @@ export const PATTERNS: Pattern[] = [
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    11,
-    15,
-    125,
-    167,
-    283
-  ],
+    relatedProblems: [11, 15, 26, 31, 42, 48, 54, 75, 125, 167, 234, 283, 340, 493, 727, 930, 992, 1248, 1358, 1423, 20900, 20926],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 2,
     orderInRoadmap: 1
@@ -357,14 +351,7 @@ export const PATTERNS: Pattern[] = [
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    3,
-    76,
-    424,
-    567,
-    904,
-    1004
-  ],
+    relatedProblems: [3, 76, 340, 424, 567, 727, 904, 930, 992, 1004, 1248, 1358, 1423, 1781, 20926, 22394],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 2,
     orderInRoadmap: 2
@@ -461,13 +448,7 @@ export const PATTERNS: Pattern[] = [
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    525,
-    560,
-    974,
-    1248,
-    930
-  ],
+    relatedProblems: [238, 437, 525, 560],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 2,
     orderInRoadmap: 3
@@ -579,13 +560,7 @@ export const PATTERNS: Pattern[] = [
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    33,
-    34,
-    74,
-    153,
-    378
-  ],
+    relatedProblems: [4, 33, 34, 35, 74, 99, 153, 173, 240, 285, 287, 300, 378, 450, 653, 700, 701, 1008, 1235, 1373, 20107, 21153, 22398, 22778],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 2,
     orderInRoadmap: 4
@@ -712,13 +687,7 @@ export const PATTERNS: Pattern[] = [
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    875,
-    1011,
-    410,
-    1231,
-    1482
-  ],
+    relatedProblems: [875, 1011],
     prerequisitePatterns: [
     "binary-search"
   ],
@@ -820,13 +789,7 @@ export const PATTERNS: Pattern[] = [
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    53,
-    152,
-    121,
-    918,
-    1749
-  ],
+    relatedProblems: [53, 121, 152, 22761],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 2,
     orderInRoadmap: 6
@@ -925,13 +888,7 @@ export const PATTERNS: Pattern[] = [
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    1,
-    49,
-    217,
-    242,
-    347
-  ],
+    relatedProblems: [1, 14, 36, 49, 73, 128, 138, 146, 205, 217, 229, 242, 289, 347, 380, 451],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 2,
     orderInRoadmap: 7
@@ -1048,13 +1005,7 @@ export const PATTERNS: Pattern[] = [
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    20,
-    71,
-    150,
-    155,
-    224
-  ],
+    relatedProblems: [20, 150, 155, 224, 225, 227, 232, 402, 460, 735, 901, 907, 20285, 20387, 20388, 20390, 20391, 20586, 20587, 20824, 20825, 20848, 20849, 20957, 20972],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 2,
     orderInRoadmap: 8
@@ -1161,13 +1112,7 @@ export const PATTERNS: Pattern[] = [
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    42,
-    84,
-    739,
-    853,
-    901
-  ],
+    relatedProblems: [42, 84, 85, 496, 503, 739, 853, 20768],
     prerequisitePatterns: [
     "stack-basic"
   ],
@@ -1281,13 +1226,7 @@ def max_sliding_window(nums, k):
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    239,
-    1438,
-    862,
-    1696,
-    1425
-  ],
+    relatedProblems: [239, 1438],
     prerequisitePatterns: [
     "sliding-window",
     "monotonic-stack"
@@ -1404,13 +1343,7 @@ def max_sliding_window(nums, k):
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    39,
-    46,
-    78,
-    79,
-    90
-  ],
+    relatedProblems: [17, 22, 25, 37, 39, 40, 46, 50, 51, 78, 79, 90, 140, 212, 216, 282, 301, 20222, 20493, 20867, 20869, 20871, 20872, 20878, 20879, 20880, 20901, 22400, 22858],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 3,
     orderInRoadmap: 11
@@ -1542,13 +1475,7 @@ def bfs(graph, start, target):
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    102,
-    127,
-    200,
-    994,
-    1091
-  ],
+    relatedProblems: [102, 103, 106, 116, 126, 127, 130, 133, 144, 145, 199, 200, 222, 305, 542, 545, 662, 733, 743, 778, 787, 802, 827, 863, 934, 947, 987, 994, 1020, 1091, 1192, 1334, 1345, 1520, 1631, 20111, 20115, 20120, 20122, 20124, 20136, 20185, 20496, 20507, 20508, 20517, 20522, 20523, 20524, 20529, 21221, 21222, 22789, 22817, 22825, 22826, 22827, 22828, 22864, 22865, 22870, 22871],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 3,
     orderInRoadmap: 12
@@ -1656,13 +1583,7 @@ function inorder(root,res=[]) {
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    98,
-    100,
-    104,
-    124,
-    543
-  ],
+    relatedProblems: [94, 98, 100, 101, 104, 105, 106, 110, 112, 114, 124, 129, 144, 145, 199, 222, 226, 230, 235, 236, 297, 437, 543, 545, 572, 662, 863, 987, 20111, 20115, 20120, 20122, 20124, 20136, 20185, 22789, 22864, 22865],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 3,
     orderInRoadmap: 13
@@ -1783,13 +1704,7 @@ int countComponents(int n) {
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    133,
-    200,
-    417,
-    695,
-    934
-  ],
+    relatedProblems: [79, 130, 133, 200, 305, 329, 542, 547, 695, 733, 778, 785, 802, 827, 934, 947, 1020, 1091, 1192, 1319, 1334, 1514, 1520, 1631, 20496, 20517, 20522, 20523, 20524, 20528, 20529, 21221, 21222, 22825, 22826, 22827, 22828, 22830, 22831, 22870, 22871],
     prerequisitePatterns: [
     "dfs-tree"
   ],
@@ -1912,13 +1827,7 @@ def topo_sort(n, prereqs):
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    207,
-    210,
-    269,
-    310,
-    444
-  ],
+    relatedProblems: [207, 210, 269, 20502, 22822],
     prerequisitePatterns: [
     "dfs-graph",
     "bfs"
@@ -2057,13 +1966,7 @@ bool unite(int x,int y){
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    128,
-    261,
-    684,
-    721,
-    947
-  ],
+    relatedProblems: [128, 261, 684, 721, 20516],
     prerequisitePatterns: [
     "dfs-graph"
   ],
@@ -2165,13 +2068,7 @@ int kthLargest(int* nums,int n,int k){
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    23,
-    215,
-    347,
-    378,
-    703
-  ],
+    relatedProblems: [23, 215, 347, 355, 378, 621, 703, 743, 846, 1514, 20568, 20571, 20572, 20576, 20578, 20755, 20898, 21223, 22409, 22840],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 3,
     orderInRoadmap: 17
@@ -2279,13 +2176,7 @@ int kthLargest(int* nums,int n,int k){
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    56,
-    57,
-    435,
-    452,
-    986
-  ],
+    relatedProblems: [56, 57, 435],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 3,
     orderInRoadmap: 18
@@ -2405,13 +2296,7 @@ double findMedian(int* nums, int n){
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    295,
-    480,
-    502,
-    857,
-    1825
-  ],
+    relatedProblems: [295],
     prerequisitePatterns: [
     "heaps"
   ],
@@ -2514,13 +2399,7 @@ double findMedian(int* nums, int n){
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    70,
-    198,
-    213,
-    279,
-    322
-  ],
+    relatedProblems: [70, 91, 96, 120, 123, 152, 188, 198, 213, 279, 300, 309, 322, 368, 583, 714, 787, 983, 1043, 1048, 1092, 1106, 1235, 1277, 1547, 20288, 20289, 20292, 20309, 20317, 20318, 20320, 20769, 21195, 22803],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 3,
     orderInRoadmap: 20
@@ -2623,13 +2502,7 @@ double findMedian(int* nums, int n){
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    62,
-    64,
-    85,
-    221,
-    931
-  ],
+    relatedProblems: [62, 63, 64, 85, 312, 329, 1335, 20327, 22806],
     prerequisitePatterns: [
     "dp-1d"
   ],
@@ -2735,13 +2608,7 @@ double findMedian(int* nums, int n){
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    72,
-    97,
-    1143,
-    1312,
-    115
-  ],
+    relatedProblems: [5, 10, 44, 72, 115, 132, 139, 140, 516, 647, 673, 1143, 1312, 20633, 20851, 22799, 22851],
     prerequisitePatterns: [
     "dp-1d",
     "dp-2d-grid"
@@ -2850,13 +2717,7 @@ double findMedian(int* nums, int n){
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    416,
-    494,
-    518,
-    1049,
-    474
-  ],
+    relatedProblems: [416, 494, 518, 20325, 22801, 22804],
     prerequisitePatterns: [
     "dp-1d"
   ],
@@ -2972,13 +2833,7 @@ int maxPathSum(struct TreeNode* root){gMax=INT_MIN;dfs(root);return gMax;}`,
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    337,
-    437,
-    543,
-    124,
-    968
-  ],
+    relatedProblems: [124],
     prerequisitePatterns: [
     "dfs-tree",
     "dp-1d"
@@ -3081,13 +2936,7 @@ int maxPathSum(struct TreeNode* root){gMax=INT_MIN;dfs(root);return gMax;}`,
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    45,
-    55,
-    621,
-    763,
-    1235
-  ],
+    relatedProblems: [45, 55, 122, 135, 169, 435, 455, 621, 678, 763, 860, 20489, 20547, 20548, 20549, 20551, 22859],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 4,
     orderInRoadmap: 25
@@ -3211,13 +3060,7 @@ int search(TN* r,char* w){for(;*w;w++){int i=*w-'a';if(!r->ch[i])return 0;r=r->c
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    208,
-    211,
-    212,
-    421,
-    648
-  ],
+    relatedProblems: [208, 211, 212, 421, 1707, 21023, 21026, 21027, 22390],
     prerequisitePatterns: [
     "hashmap-frequency"
   ],
@@ -3318,13 +3161,7 @@ function countBits(n){let c=0;while(n){c+=n&1;n>>=1;}return c;}`,
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    136,
-    190,
-    191,
-    268,
-    338
-  ],
+    relatedProblems: [29, 190, 191, 204, 231, 268, 338, 20141, 20145, 20146, 20171, 20177, 20243, 20370, 20652, 21005, 21155, 22410, 22853],
     prerequisitePatterns: [],
     estimatedDaysToMaster: 4,
     orderInRoadmap: 27
@@ -3440,13 +3277,7 @@ function findMiddle(head){
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    19,
-    141,
-    142,
-    143,
-    876
-  ],
+    relatedProblems: [2, 19, 21, 24, 25, 141, 143, 160, 206, 287, 876, 20619, 20623],
     prerequisitePatterns: [
     "two-pointers"
   ],
@@ -3574,13 +3405,7 @@ void mergeSort(int* a,int l,int r){
       "fix": "Explain how many times each pointer, node, edge, or DP cell is processed."
     }
   ],
-    relatedProblems: [
-    4,
-    23,
-    53,
-    105,
-    215
-  ],
+    relatedProblems: [4, 23, 105, 108, 20945, 20946],
     prerequisitePatterns: [
     "recursion-backtracking"
   ],

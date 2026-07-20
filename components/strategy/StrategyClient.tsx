@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PATTERNS } from "@/data/patterns";
 
@@ -64,28 +65,44 @@ const mockCards = [
     name: "Pramp",
     badge: "Free",
     badgeColor: "#00b8a3",
-    content: ["Free peer-to-peer mocks. Up to 6/month.", "Best for: communication under time pressure.", "Schedule 2/week starting Week 8. Debrief 10 min after."],
+    content: [
+      "Pramp provides a free, reciprocal peer-to-peer interview format where you alternate roles as candidate and interviewer.",
+      "It is best for practice under real-time peer pressure, verbalizing solutions, and learning by grading others.",
+      "We recommend scheduling 2 sessions per week starting from Week 8, ensuring a 10-minute debrief immediately after to log feedback."
+    ],
     link: "pramp.com",
-  },
-  {
-    name: "Interviewing.io",
-    badge: "$50–100",
-    badgeColor: "#f97316",
-    content: ["Anonymous mocks with Google/Meta/Amazon engineers.", "Worth 2 sessions before final rounds.", "Best for: real interviewer feedback on communication."],
-    link: "interviewing.io",
   },
   {
     name: "Self-Mock",
     badge: "Weekly",
     badgeColor: "#8b5cf6",
-    content: ["45-min timer. Random unseen Medium. No hints.", "Explain approach out loud. Code on paper, not IDE.", "Score: Clean=5 | Buggy=4 | Approach=3 | Wrong=1 | Quit=0"],
-    link: null,
+    content: [
+      "The Self-Mock protocol replicates exam conditions by picking a random unseen LeetCode Medium/Hard matching your active patterns.",
+      "You must set a strict 45-minute timer, disable all IDE hints, write code on paper or a whiteboard first, and explain your approach out loud.",
+      "This forces independence and helps diagnose whether translation speed or conceptual understanding is your primary bottleneck."
+    ],
+    link: "self",
+  },
+  {
+    name: "Interviewing.io",
+    badge: "$50–100",
+    badgeColor: "#f97316",
+    content: [
+      "Interviewing.io offers anonymous, paid mock interviews with senior engineers currently working at Google, Meta, and Amazon.",
+      "It provides highly detailed, realistic signal on your design trade-offs, communication clarity, and coding speed relative to actual hiring bars.",
+      "Use 1-2 sessions as a final calibration pass right before your real onsite loops to resolve remaining optimization issues."
+    ],
+    link: "interviewing.io",
   },
   {
     name: "Scoring Rubric",
     badge: "Max 20",
     badgeColor: "#ffc01e",
-    content: ["4 dimensions (1–5): Recognition | Correctness | Communication | Edge cases", "16+: FAANG ready. 12–15: Mid-tier ready.", "8–11: 2–4 more weeks. <8: Return to fundamentals."],
+    content: [
+      "Evaluate each mock session across 4 core dimensions: Pattern Recognition, Code Correctness, Communication, and Edge Case handling.",
+      "Score each dimension from 1 to 5, aiming for a total score of 16+ to indicate FAANG readiness.",
+      "A score of 12-15 represents mid-tier target readiness, while anything below 12 signals that you need to return to fundamental pattern templates."
+    ],
     link: null,
   },
 ];

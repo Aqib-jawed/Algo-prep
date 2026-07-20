@@ -5,6 +5,7 @@ import {
   GitBranch,
   Home,
   ListChecks,
+  MessageSquare,
   Play,
   Target
 } from "lucide-react";
