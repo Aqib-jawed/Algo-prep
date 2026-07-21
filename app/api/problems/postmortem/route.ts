@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
 
     // Save review log to Prisma if database configured, or return success status
     if (process.env.DATABASE_URL) {
-      await prisma.reviewLog.create({
+      await db.reviewLog.create({
         data: {
           userId: userId || "anonymous",
           problemId: Number(problemId),
@@ -26,3 +26,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error.message || "Failed to save post-mortem" }, { status: 500 });
   }
 }
+
