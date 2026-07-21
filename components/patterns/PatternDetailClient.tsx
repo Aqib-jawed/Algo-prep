@@ -1,8 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { CheckCircle2 } from "lucide-react";
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Code2,
+  Target,
+  AlertTriangle,
+  Sparkles,
+  Clock,
+  Zap,
+  BookOpen
+} from "lucide-react";
 import { Pattern } from "@/data/patterns";
+import { PROBLEMS } from "@/data/problems";
 import { ProblemTable } from "@/components/problems/ProblemTable";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { PatternTag } from "@/components/ui/PatternTag";
@@ -26,133 +38,292 @@ export function PatternDetailClient({ pattern }: { pattern: Pattern }) {
   const completed = useProgressStore((state) => state.patternsCompleted.includes(pattern.slug));
   const markPatternComplete = useProgressStore((state) => state.markPatternComplete);
   const [lang, setLang] = useState<Language>("java");
-  const notes = lineNotes(pattern.javaTemplate);
-  const toc = ["Overview", "Cheat Code", "Invariant", "Template", "Complexity", "Variants", "Mistakes", "Problems"];
+  const [activeTab, setActiveTab] = useState<"code" | "problems" | "mistakes">("code");
 
-  function getTemplate(l: Language): string {
-    switch (l) {
+  const patternProblems = useMemo(() => {
+    return PROBLEMS.filter((p) => p.patterns.includes(pattern.slug));
+  }, [pattern.slug]);
+
+  const templateCode = useMemo(() => {
+    switch (lang) {
       case "python":     return pattern.pythonTemplate || "# Template coming soon";
       case "cpp":        return pattern.cppTemplate || "// Template coming soon";
       case "c":          return pattern.cTemplate || "// Template coming soon";
       case "javascript": return pattern.javascriptTemplate || "// Template coming soon";
       default:           return pattern.javaTemplate;
     }
-  }
+  }, [lang, pattern]);
 
-  function getLangId(l: Language): string {
-    if (l === "cpp") return "cpp";
-    if (l === "c") return "c";
-    if (l === "javascript") return "javascript";
-    if (l === "python") return "python";
+  const langId = useMemo(() => {
+    if (lang === "cpp") return "cpp";
+    if (lang === "c") return "c";
+    if (lang === "javascript") return "javascript";
+    if (lang === "python") return "python";
     return "java";
-  }
+  }, [lang]);
+
+  const notes = useMemo(() => lineNotes(templateCode), [templateCode]);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[160px_1fr]">
-      <aside className="sticky top-24 hidden h-fit space-y-1 lg:block">
-        {toc.map((item) => (
-          <a key={item} href={`#${item.toLowerCase().replaceAll(" ", "-")}`} className="block border-l-2 border-transparent px-3 py-2 text-sm text-secondary hover:border-accent hover:text-primary">
-            {item}
-          </a>
-        ))}
-      </aside>
-
-      <main className="space-y-6">
-        <section id="overview" className="card p-6">
+    <div className="space-y-6">
+      {/* Top Breadcrumb & Actions Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
+        <div>
+          <Link
+            href="/patterns"
+            className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-accent transition-colors mb-2"
+          >
+            <ArrowLeft size={14} />
+            Back to Pattern Library
+          </Link>
           <div className="flex flex-wrap items-center gap-2">
             <PatternTag category={pattern.category} />
-            <Badge tone="accent">{pattern.estimatedDaysToMaster} days</Badge>
+            <Badge tone="accent">{pattern.estimatedDaysToMaster} days to master</Badge>
             {completed && <Badge tone="success">Completed</Badge>}
           </div>
-          <h1 className="mt-4 text-2xl font-semibold tracking-[0]">{pattern.name}</h1>
-          <p className="mt-3 max-w-3xl text-md text-secondary">{pattern.description}</p>
-          <div className="mt-5 space-y-2">
-            {pattern.triggerConditions.map((trigger) => (
-              <div key={trigger} className="flex gap-3 text-sm text-secondary">
-                <code className="rounded border border-border bg-base px-2 py-0.5 font-mono text-xs text-accent">{trigger}</code>
-              </div>
-            ))}
+          <h1 className="mt-2 text-2xl font-bold tracking-tight text-primary">{pattern.name}</h1>
+          <p className="mt-1 max-w-3xl text-sm text-secondary leading-relaxed">{pattern.description}</p>
+        </div>
+
+        <div className="shrink-0">
+          <button
+            onClick={() => markPatternComplete(pattern.slug)}
+            className={`inline-flex items-center gap-2 rounded-card px-4 py-2 text-xs font-semibold transition-all ${
+              completed
+                ? "border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
+                : "border border-accent/40 bg-accent-dim text-accent hover:bg-accent/20"
+            }`}
+          >
+            <CheckCircle2 size={16} />
+            {completed ? "Completed Pattern" : "Mark Pattern Complete"}
+          </button>
+        </div>
+      </div>
+
+      {/* Hero Cheat Code & Signal Banner */}
+      <section className="grid gap-4 md:grid-cols-3">
+        <div className="card p-4 border-l-4 border-accent bg-surface">
+          <div className="flex items-center gap-2 text-accent">
+            <Zap size={15} />
+            <span className="label text-accent">Recognition Signal</span>
           </div>
-        </section>
+          <p className="mt-2 text-xs font-mono text-secondary leading-relaxed">
+            {pattern.triggerConditions[0] || "Look for sorted bounds or window constraints."}
+          </p>
+        </div>
 
-        <section id="cheat-code" className="border-l-[3px] border-accent bg-[#0a0a0a] p-5">
-          <h2 className="text-md font-semibold tracking-[0]">{pattern.cheatCode}</h2>
-          <p className="mt-3 text-sm text-secondary"><span className="label">Trigger phrase:</span> <em>{pattern.triggerConditions[0]}</em></p>
-        </section>
-
-        <section id="invariant" className="card p-5">
-          <h2 className="text-lg font-semibold tracking-[0]">Core Invariant</h2>
-          <div className="mt-3 rounded-card border border-border bg-surface p-4 font-mono text-sm text-secondary">{pattern.coreInvariant}</div>
-        </section>
-
-        <section id="template" className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-lg font-semibold tracking-[0]">Code Template</h2>
-            <LanguageSelector value={lang} onChange={setLang} />
+        <div className="card p-4 border-l-4 border-accent bg-surface">
+          <div className="flex items-center gap-2 text-accent">
+            <Sparkles size={15} />
+            <span className="label text-accent">Cheat Code Formula</span>
           </div>
-          <CodeBlock code={getTemplate(lang)} language={getLangId(lang)} />
-          {lang === "java" && notes.length > 0 && (
-            <div className="overflow-hidden rounded-card border border-border">
-              <table className="w-full text-left text-sm">
-                <thead className="bg-surface"><tr><th className="px-3 py-2 label">Line</th><th className="px-3 py-2 label">What it does</th></tr></thead>
-                <tbody>
-                  {notes.map((note) => (
-                    <tr key={`${note.range}-${note.text}`} className="border-t border-border">
-                      <td className="px-3 py-2 font-mono text-xs text-muted">{note.range}</td>
-                      <td className="px-3 py-2 text-secondary">{note.text}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </section>
+          <p className="mt-2 text-xs font-semibold text-primary leading-relaxed">
+            {pattern.cheatCode}
+          </p>
+        </div>
 
-        <section id="complexity" className="card p-5">
-          <h2 className="text-lg font-semibold tracking-[0]">Complexity</h2>
-          <table className="mt-4 w-full text-left text-sm">
-            <tbody>
-              <tr className="border-b border-border"><td className="py-3 label">Time</td><td className="font-mono text-accent">{pattern.timeComplexity.notation}</td><td className="text-secondary">{pattern.timeComplexity.explanation}</td></tr>
-              <tr><td className="py-3 label">Space</td><td className="font-mono text-accent">{pattern.spaceComplexity.notation}</td><td className="text-secondary">{pattern.spaceComplexity.explanation}</td></tr>
-            </tbody>
-          </table>
-        </section>
+        <div className="card p-4 border-l-4 border-accent bg-surface">
+          <div className="flex items-center gap-2 text-accent">
+            <BookOpen size={15} />
+            <span className="label text-accent">Core Invariant</span>
+          </div>
+          <p className="mt-2 text-xs font-mono text-secondary leading-relaxed truncate" title={pattern.coreInvariant}>
+            {pattern.coreInvariant}
+          </p>
+        </div>
+      </section>
 
-        <section id="variants" className="grid gap-3 md:grid-cols-3">
-          {pattern.variants.map((variant) => (
-            <div key={variant.name} className="card p-4">
-              <h3 className="font-semibold tracking-[0]">{variant.name}</h3>
-              <p className="mt-2 text-sm text-secondary">{variant.whenToUse}</p>
-              <p className="mt-2 text-sm text-muted">{variant.keyDifference}</p>
-            </div>
-          ))}
-        </section>
-
-        <section id="mistakes" className="card p-5">
-          <h2 className="text-lg font-semibold tracking-[0]">Top 5 Mistakes</h2>
-          <ol className="mt-4 space-y-3">
-            {pattern.topMistakes.map((item, index) => (
-              <li key={item.mistake} className="text-sm">
-                <p className="text-hard">{index + 1}. {item.mistake}</p>
-                <p className="mt-1 text-easy">→ Fix: {item.fix}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <section id="problems" className="space-y-4">
-          <h2 className="text-lg font-semibold tracking-[0]">Problems In This Pattern</h2>
-          <ProblemTable initialPattern={pattern.slug} hideFilters />
-        </section>
+      {/* Tab Navigation Switcher */}
+      <div className="flex items-center gap-2 border-b border-border pb-1">
+        <button
+          onClick={() => setActiveTab("code")}
+          className={`inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-t-card transition-colors border-b-2 -mb-1 ${
+            activeTab === "code"
+              ? "border-accent text-accent bg-accent-dim/30"
+              : "border-transparent text-muted hover:text-secondary"
+          }`}
+        >
+          <Code2 size={15} />
+          Code Template & Strategy
+        </button>
 
         <button
-          onClick={() => markPatternComplete(pattern.slug)}
-          className="inline-flex items-center gap-2 rounded-card border border-accent/40 bg-accent-dim px-4 py-2 text-sm font-medium text-accent"
+          onClick={() => setActiveTab("problems")}
+          className={`inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-t-card transition-colors border-b-2 -mb-1 ${
+            activeTab === "problems"
+              ? "border-accent text-accent bg-accent-dim/30"
+              : "border-transparent text-muted hover:text-secondary"
+          }`}
         >
-          {completed ? <CheckCircle2 size={16} /> : null}
-          {completed ? "Completed" : "Mark Pattern Complete"}
+          <Target size={15} />
+          Practice Problems
+          <span className="rounded-full bg-base px-2 py-0.5 font-mono text-[10px] border border-border">
+            {patternProblems.length}
+          </span>
         </button>
-      </main>
+
+        <button
+          onClick={() => setActiveTab("mistakes")}
+          className={`inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-t-card transition-colors border-b-2 -mb-1 ${
+            activeTab === "mistakes"
+              ? "border-accent text-accent bg-accent-dim/30"
+              : "border-transparent text-muted hover:text-secondary"
+          }`}
+        >
+          <AlertTriangle size={15} />
+          Mistakes & Avoidance
+          <span className="rounded-full bg-base px-2 py-0.5 font-mono text-[10px] border border-border">
+            {pattern.topMistakes.length}
+          </span>
+        </button>
+      </div>
+
+      {/* Tab 1: Code & Strategy */}
+      {activeTab === "code" && (
+        <div className="grid gap-6 lg:grid-cols-12 items-start">
+          {/* Left Column: Code Template (7 cols) */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="card p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3 mb-3">
+                <div className="flex items-center gap-2">
+                  <Code2 size={16} className="text-accent" />
+                  <h2 className="text-sm font-bold tracking-tight">Canonical Code Template</h2>
+                </div>
+                <LanguageSelector value={lang} onChange={setLang} />
+              </div>
+
+              <CodeBlock code={templateCode} language={langId} />
+
+              {notes.length > 0 && (
+                <div className="mt-4 overflow-hidden rounded-card border border-border">
+                  <div className="bg-surface px-3 py-2 border-b border-border">
+                    <span className="label">Template Line Explanations</span>
+                  </div>
+                  <table className="w-full text-left text-xs">
+                    <tbody>
+                      {notes.map((note) => (
+                        <tr key={`${note.range}-${note.text}`} className="border-t border-border/60">
+                          <td className="px-3 py-2 font-mono text-[11px] text-accent w-12">{note.range}</td>
+                          <td className="px-3 py-2 text-secondary leading-relaxed">{note.text}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right Column: Complexity, Variants, Core Invariant (5 cols) */}
+          <div className="lg:col-span-5 space-y-4">
+            {/* Complexity Analysis Card */}
+            <div className="card p-5">
+              <div className="flex items-center gap-2 border-b border-border pb-3 mb-3">
+                <Clock size={16} className="text-accent" />
+                <h2 className="text-sm font-bold tracking-tight">Complexity Analysis</h2>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-start justify-between border-b border-border/50 pb-2.5">
+                  <div>
+                    <span className="label">Time Complexity</span>
+                    <p className="mt-1 text-xs text-secondary leading-relaxed">{pattern.timeComplexity.explanation}</p>
+                  </div>
+                  <span className="font-mono text-sm font-bold text-accent bg-accent-dim px-2 py-0.5 rounded border border-accent/20">
+                    {pattern.timeComplexity.notation}
+                  </span>
+                </div>
+
+                <div className="flex items-start justify-between pt-1">
+                  <div>
+                    <span className="label">Space Complexity</span>
+                    <p className="mt-1 text-xs text-secondary leading-relaxed">{pattern.spaceComplexity.explanation}</p>
+                  </div>
+                  <span className="font-mono text-sm font-bold text-accent bg-accent-dim px-2 py-0.5 rounded border border-accent/20">
+                    {pattern.spaceComplexity.notation}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Core Invariant Breakdown */}
+            <div className="card p-5">
+              <span className="label">Core Invariant</span>
+              <div className="mt-2.5 rounded-card border border-border bg-base p-3 font-mono text-xs text-secondary leading-relaxed">
+                {pattern.coreInvariant}
+              </div>
+            </div>
+
+            {/* Pattern Variants Summary */}
+            <div className="card p-5 space-y-3">
+              <span className="label">Pattern Variants</span>
+              <div className="space-y-2.5">
+                {pattern.variants.map((variant) => (
+                  <div key={variant.name} className="rounded-card border border-border/80 bg-base/60 p-3">
+                    <span className="text-xs font-bold text-primary">{variant.name}</span>
+                    <p className="mt-1 text-[11px] text-secondary leading-relaxed">{variant.whenToUse}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab 2: Practice Problems */}
+      {activeTab === "problems" && (
+        <div className="card p-5">
+          <div className="mb-4 flex items-center justify-between border-b border-border pb-3">
+            <div>
+              <h2 className="text-base font-semibold tracking-tight">Practice Problems ({patternProblems.length})</h2>
+              <p className="text-xs text-muted mt-0.5">Filter and solve curated questions tagged with {pattern.name}</p>
+            </div>
+          </div>
+          <ProblemTable initialPattern={pattern.slug} hideFilters={false} />
+        </div>
+      )}
+
+      {/* Tab 3: Mistakes & Avoidance */}
+      {activeTab === "mistakes" && (
+        <div className="grid gap-6 lg:grid-cols-12 items-start">
+          <div className="lg:col-span-7 space-y-4">
+            <div className="card p-5">
+              <div className="flex items-center gap-2 border-b border-border pb-3 mb-4">
+                <AlertTriangle size={18} className="text-rose-500" />
+                <h2 className="text-base font-semibold tracking-tight">Top 5 Mistakes & Pitfalls</h2>
+              </div>
+              <div className="space-y-4">
+                {pattern.topMistakes.map((item, index) => (
+                  <div key={item.mistake} className="rounded-card border border-border bg-base p-4">
+                    <p className="text-xs font-semibold text-rose-400">
+                      {index + 1}. {item.mistake}
+                    </p>
+                    <div className="mt-2 flex items-start gap-2 text-xs text-emerald-400 font-medium">
+                      <span>✓ Fix:</span>
+                      <span className="text-secondary">{item.fix}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="lg:col-span-5 space-y-4">
+            <div className="card p-5 space-y-3">
+              <h3 className="text-sm font-bold tracking-tight">Variant Strategy Details</h3>
+              <div className="space-y-3">
+                {pattern.variants.map((variant) => (
+                  <div key={variant.name} className="rounded-card border border-border bg-base p-3.5 space-y-1.5">
+                    <p className="text-xs font-bold text-accent">{variant.name}</p>
+                    <p className="text-xs text-secondary"><strong>When:</strong> {variant.whenToUse}</p>
+                    <p className="text-xs text-muted"><strong>Key difference:</strong> {variant.keyDifference}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+

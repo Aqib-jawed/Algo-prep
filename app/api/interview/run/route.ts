@@ -1,47 +1,42 @@
 import { NextResponse } from "next/server";
 import { PROBLEMS } from "@/data/problems";
-import { getProblemDetails } from "@/lib/interview/problemDetails";
+import { evaluateUserCode } from "@/lib/evaluation/codeEvaluator";
 import { submitToJudge0 } from "@/lib/judge0/judge0Client";
 import { pollJudge0Submission } from "@/lib/judge0/judge0Polling";
 import { ProgrammingLanguage } from "@/types/interview";
+import { STARTER_TEMPLATES } from "@/data/interview/starterTemplates";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { code, language, problemId } = body;
+    let { code, language, problemId } = body;
 
-    // 1. Validation
-    if (!code || !language || !problemId) {
+    // 1. Validation & Fallbacks
+    if (!language || problemId === undefined) {
       return NextResponse.json(
-        { error: "Missing required execution parameters (code, language, problemId)." },
+        { error: "Missing required execution parameters (language, problemId)." },
         { status: 400 }
       );
     }
 
-    // 2. Fetch problem title and detailed sample test cases
-    const problem = PROBLEMS.find((p) => p.id === problemId);
-    const title = problem ? problem.title : "Fallback Problem";
-    const details = getProblemDetails(problemId, title);
+    const langKey = language as ProgrammingLanguage;
+    if (!code || typeof code !== "string" || !code.trim()) {
+      code = STARTER_TEMPLATES[langKey] || "console.log('Hello World');";
+    }
 
-    const firstExample = details.examples[0] || { input: "", output: "" };
+    const problem = PROBLEMS.find((p) => p.id === Number(problemId));
+    const title = problem ? problem.title : "Algorithm Problem";
 
-    // 3. Submit code execution to Judge0 using first sample test case
-    const token = await submitToJudge0(
-      code,
-      language as ProgrammingLanguage,
-      firstExample.input,
-      firstExample.output
-    );
+    // If Judge0 API credentials exist, execute remotely via Judge0
+    if (process.env.JUDGE0_API_URL && process.env.JUDGE0_API_KEY) {
+      const token = await submitToJudge0(code, langKey, "", "");
+      const result = await pollJudge0Submission(token);
+      return NextResponse.json(result);
+    }
 
-    // 4. Poll execution result
-    const result = await pollJudge0Submission(token);
-
-    // Attach sample test case metrics for frontend console rendering
-    return NextResponse.json({
-      ...result,
-      input: firstExample.input,
-      expectedOutput: firstExample.output,
-    });
+    // Otherwise evaluate code dynamically against multiple sample testcases locally
+    const evaluated = evaluateUserCode(code, langKey, Number(problemId), title);
+    return NextResponse.json(evaluated);
   } catch (error: any) {
     console.error("Code run route error:", error);
     return NextResponse.json(
@@ -50,3 +45,5 @@ export async function POST(req: Request) {
     );
   }
 }
+
+

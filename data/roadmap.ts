@@ -149,8 +149,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     167,
     283
   ],
-    transitionReasoning: "Week 2 follows Week 1 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 2]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 3,
@@ -219,8 +219,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     378,
     437
   ],
-    transitionReasoning: "Week 3 follows Week 2 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 3]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 4,
@@ -289,8 +289,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     853,
     1438
   ],
-    transitionReasoning: "Week 4 follows Week 3 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 4]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 5,
@@ -355,8 +355,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     287,
     876
   ],
-    transitionReasoning: "Week 5 follows Week 4 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 5]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 6,
@@ -424,8 +424,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     114,
     116
   ],
-    transitionReasoning: "Week 6 follows Week 5 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 6]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 7,
@@ -494,8 +494,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     124,
     129
   ],
-    transitionReasoning: "Week 7 follows Week 6 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 7]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 8,
@@ -562,8 +562,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     212,
     301
   ],
-    transitionReasoning: "Week 8 follows Week 7 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 8]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 9,
@@ -631,8 +631,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     743,
     787
   ],
-    transitionReasoning: "Week 9 follows Week 8 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 9]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 10,
@@ -695,8 +695,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     684,
     721
   ],
-    transitionReasoning: "Week 10 follows Week 9 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 10]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 11,
@@ -764,8 +764,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     309,
     322
   ],
-    transitionReasoning: "Week 11 follows Week 10 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 11]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 12,
@@ -826,8 +826,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     329,
     1335
   ],
-    transitionReasoning: "Week 12 follows Week 11 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 12]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 13,
@@ -894,8 +894,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     1143,
     1312
   ],
-    transitionReasoning: "Week 13 follows Week 12 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 13]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 14,
@@ -961,8 +961,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     621,
     763
   ],
-    transitionReasoning: "Week 14 follows Week 13 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 14]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 15,
@@ -1032,8 +1032,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     494,
     518
   ],
-    transitionReasoning: "Week 15 follows Week 14 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 15]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   },
   {
     week: 16,
@@ -1111,8 +1111,8 @@ export const ROADMAP_WEEKS: RoadmapWeek[] = [
     53,
     54
   ],
-    transitionReasoning: "Week 16 follows Week 15 by adding one new constraint model while reusing the previous week's implementation discipline.",
-    commonMistakes: "Rushing into code, losing the invariant during edge cases, and failing to redo missed problems within a week."
+    transitionReasoning: "[TODO: Add unique transition reasoning for Week 16]",
+    commonMistakes: "[TODO: Add unique common mistakes for this week]"
   }
 ];
 

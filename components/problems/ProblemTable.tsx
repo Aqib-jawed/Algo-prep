@@ -40,6 +40,10 @@ function ProblemTableInner({ initialPattern, hideFilters = false }: { initialPat
   const weekFilter = Number(searchParams.get("week") ?? 0);
   const companies = ["All", ...Object.values(COMPANY_DATA).map((item) => item.name)];
 
+  // Ensure store state (solved/starred) is hydrated safely after mount
+  const effectiveSolved = mounted ? solvedProblems : [];
+  const effectiveStarred = mounted ? starredProblems : [];
+
   const filtered = useMemo(() => {
     const searched = searchProblems(debounced, PROBLEMS);
     const rows = searched.filter((problem) => {
@@ -47,9 +51,9 @@ function ProblemTableInner({ initialPattern, hideFilters = false }: { initialPat
       const matchesDifficulty = difficulty === "All" || problem.difficulty === difficulty;
       const matchesStatus =
         status === "All" ||
-        (status === "Solved" && solvedProblems.includes(problem.id)) ||
-        (status === "Unsolved" && !solvedProblems.includes(problem.id)) ||
-        (status === "Starred" && starredProblems.includes(problem.id));
+        (status === "Solved" && effectiveSolved.includes(problem.id)) ||
+        (status === "Unsolved" && !effectiveSolved.includes(problem.id)) ||
+        (status === "Starred" && effectiveStarred.includes(problem.id));
       const matchesFrequency = frequency === "All" || problem.frequency === frequency;
       const matchesCompany = company === "All" || problem.companies.includes(company);
       const matchesQuick =
@@ -67,7 +71,7 @@ function ProblemTableInner({ initialPattern, hideFilters = false }: { initialPat
       return a.id - b.id;
     });
     return rows;
-  }, [debounced, selectedPatterns, difficulty, status, frequency, company, quick, sort, solvedProblems, starredProblems, weekFilter]);
+  }, [debounced, selectedPatterns, difficulty, status, frequency, company, quick, sort, effectiveSolved, effectiveStarred, weekFilter]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / 50));
   const visible = filtered.slice((page - 1) * 50, page * 50);
@@ -78,15 +82,7 @@ function ProblemTableInner({ initialPattern, hideFilters = false }: { initialPat
     setSelectedPatterns((current) => current.includes(slug) ? current.filter((item) => item !== slug) : [...current, slug]);
   }
 
-  if (!mounted) {
-    return (
-      <div className="space-y-2 py-4">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="h-12 animate-pulse rounded-card bg-elevated" style={{ opacity: 1 - i * 0.1 }} />
-        ))}
-      </div>
-    );
-  }
+
 
   return (
     <div className="space-y-4 pb-16">
