@@ -73,7 +73,7 @@ const mockCards = [
     link: "pramp.com",
   },
   {
-    name: "Self-Mock",
+    name: "Self-Mock Protocol",
     badge: "Weekly",
     badgeColor: "#8b5cf6",
     content: [
@@ -106,6 +106,7 @@ const mockCards = [
     link: null,
   },
 ];
+
 
 /* ─── Interview round data ─── */
 const rounds = [

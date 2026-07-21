@@ -15,14 +15,18 @@ enum Role {
 }
 
 model User {
-  id            String        @id @default(cuid())
+  id            String            @id @default(cuid())
   name          String?
-  email         String?       @unique
+  email         String?           @unique
   emailVerified DateTime?
   image         String?
-  password      String?       @db.Text
-  role          Role          @default(STUDENT)
-  createdAt     DateTime      @default(now())
+  password      String?           @db.Text
+  role          Role              @default(STUDENT)
+  college       String?
+  referredBy    String?
+  timezone      String            @default("UTC")
+  cohortId      String?
+  createdAt     DateTime          @default(now())
   settings      UserSettings?
   mockSessions  MockSession[]
 
@@ -32,15 +36,20 @@ model User {
   starredProblems StarredProblem[]
   patternProgress PatternProgress[]
   dailyActivity   DailyActivity[]
+  reviewLogs      ReviewLog[]
 }
 
 model SolvedProblem {
-  id               String   @id @default(cuid())
+  id               String    @id @default(cuid())
   userId           String
   problemId        Int
-  solvedAt         DateTime @default(now())
+  solvedAt         DateTime  @default(now())
   timeSpentSeconds Int?
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastAttempted    DateTime? @default(now())
+  nextReview       DateTime?
+  intervalDays     Int       @default(1)
+  easeFactor       Float     @default(2.5)
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, problemId])
   @@index([userId])
@@ -86,6 +95,19 @@ model UserSettings {
   streak         Int       @default(0)
   lastActiveDate String    @default("")
   user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ReviewLog {
+  id             String   @id @default(cuid())
+  userId         String
+  problemId      Int
+  failureCategory String  // conceptual_gap | translation_bug | edge_case_miss | time_limit_exceeded | syntax_error
+  notes          String?  @db.Text
+  createdAt      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([problemId])
 }
 
 model Account {
