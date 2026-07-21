@@ -1,8 +1,14 @@
 "use client";
 
+import { useEffect } from "react";
 import { RotateCcw } from "lucide-react";
+import { captureException } from "@/lib/observability/sentry";
 
 export function ErrorState({ error, reset }: { error: Error; reset: () => void }) {
+  useEffect(() => {
+    captureException(error, { source: "React ErrorBoundary" });
+  }, [error]);
+
   return (
     <section className="card p-6">
       <p className="label text-hard">Page error</p>
@@ -17,3 +23,4 @@ export function ErrorState({ error, reset }: { error: Error; reset: () => void }
     </section>
   );
 }
+

@@ -136,9 +136,26 @@ export function RoadmapClient() {
               </table>
             </div>
             <blockquote className="mt-5 border-l-2 border-accent bg-accent-dim/30 px-4 py-3 text-sm text-secondary">{week.weeklyGoal}</blockquote>
-            <p className="mt-4 rounded-card border border-border bg-base p-3 text-sm text-secondary">{week.transitionReasoning}</p>
-            <p className="mt-3 rounded-card border border-hard/30 bg-hard/10 p-3 text-sm text-hard">{week.commonMistakes}</p>
+            
+            <div className="mt-4 rounded-card border border-border bg-base p-3 text-sm text-secondary">
+              {week.transitionReasoning.includes("[TODO") && (
+                <span className="mb-1.5 inline-flex items-center gap-1 rounded bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 text-2xs font-mono font-bold text-amber-400">
+                  ⚠️ Transition Reasoning Needed
+                </span>
+              )}
+              <p>{week.transitionReasoning}</p>
+            </div>
+
+            <div className="mt-3 rounded-card border border-hard/30 bg-hard/10 p-3 text-sm text-hard">
+              {week.commonMistakes.includes("[TODO") && (
+                <span className="mb-1.5 inline-flex items-center gap-1 rounded bg-rose-500/15 border border-rose-500/30 px-2 py-0.5 text-2xs font-mono font-bold text-rose-400">
+                  ⚠️ Common Mistakes Needed
+                </span>
+              )}
+              <p>{week.commonMistakes}</p>
+            </div>
           </article>
+
         ))}
       </div>
 
