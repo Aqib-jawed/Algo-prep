@@ -20,9 +20,12 @@ export function ProblemRow({ problem, rowIndex, onStartTimer }: { problem: Probl
   const markSolved = useProgressStore((state) => state.markSolved);
   const unmarkSolved = useProgressStore((state) => state.unmarkSolved);
   const toggleStarred = useProgressStore((state) => state.toggleStarred);
+  const savePostMortem = useProgressStore((state) => state.savePostMortem);
+  const pastReflection = useProgressStore((state) => state.postMortemLogs[problem.id]);
   const color = patternCategoryColors[problem.category] ?? "#f97316";
 
   const handlePostMortemSubmit = async (category: string, notes: string) => {
+    savePostMortem(problem.id, category, notes);
     try {
       await fetch("/api/problems/postmortem", {
         method: "POST",
@@ -38,6 +41,7 @@ export function ProblemRow({ problem, rowIndex, onStartTimer }: { problem: Probl
       showGlobalToast("Post-mortem saved locally.", "info");
     }
   };
+
 
   return (
     <>
@@ -106,15 +110,32 @@ export function ProblemRow({ problem, rowIndex, onStartTimer }: { problem: Probl
           </div>
         </td>
         <td className="relative px-3 py-3">
-          <button onClick={() => setHintOpen((value) => !value)} className="text-muted hover:text-accent" aria-label="Show hint">
+          <button onClick={() => setHintOpen((value) => !value)} className={`text-muted hover:text-accent ${pastReflection ? "text-amber-400" : ""}`} aria-label="Show hint">
             <Lightbulb size={16} />
           </button>
           {hintOpen && (
-            <div className="absolute right-3 top-9 z-20 w-72 rounded-card border border-border bg-surface p-3 text-sm text-secondary">
-              {problem.unlockHint}
+            <div className="absolute right-3 top-9 z-20 w-80 rounded-card border border-border bg-surface p-3.5 text-xs text-secondary shadow-xl space-y-2">
+              {pastReflection && (
+                <div className="p-2.5 rounded bg-amber-500/15 border border-amber-500/40 text-amber-300">
+                  <p className="font-bold font-mono text-2xs uppercase tracking-wider flex items-center gap-1">
+                    🧠 Your Past Post-Mortem Reflection:
+                  </p>
+                  <p className="mt-1 font-semibold text-2xs uppercase text-amber-200">
+                    [{pastReflection.category.replace(/_/g, " ")}]
+                  </p>
+                  {pastReflection.notes && (
+                    <p className="mt-1 italic text-secondary">&quot;{pastReflection.notes}&quot;</p>
+                  )}
+                </div>
+              )}
+              <div>
+                <p className="font-semibold text-primary mb-1">Standard Pattern Hint:</p>
+                <p className="text-secondary">{problem.unlockHint}</p>
+              </div>
             </div>
           )}
         </td>
+
       </tr>
 
       <FailurePostMortemModal

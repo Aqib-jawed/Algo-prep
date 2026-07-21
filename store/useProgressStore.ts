@@ -41,6 +41,7 @@ type ProgressState = {
   patternsCompleted: string[];
   dailyLog: Record<string, number>;
   solveTime: Record<number, number>;
+  postMortemLogs: Record<number, { category: string; notes: string; date: string }>;
   currentWeek: number;
   targetDate: string | null;
   weeklyGoal: number;
@@ -51,6 +52,7 @@ type ProgressState = {
   toggleStarred: (id: number) => void;
   markPatternComplete: (slug: string) => void;
   logSolveTime: (id: number, seconds: number) => void;
+  savePostMortem: (id: number, category: string, notes: string) => void;
   setTargetDate: (date: string) => void;
   setCurrentWeek: (week: number) => void;
   setWeeklyGoal: (n: number) => void;
@@ -61,6 +63,7 @@ type ProgressState = {
   getPatternMastery: (slug: string, problems?: Problem[]) => number;
   getAvgSolveTime: (difficulty: Difficulty, problems?: Problem[]) => number;
 };
+
 
 // Fire-and-forget sync to the server. Local state above is already updated
 // optimistically, so a failed or skipped call here (offline, logged out —
@@ -114,11 +117,22 @@ export const useProgressStore = create<ProgressState>()(
       patternsCompleted: [],
       dailyLog: {},
       solveTime: {},
+      postMortemLogs: {},
       currentWeek: 1,
       targetDate: null,
       weeklyGoal: 15,
       lastActiveDate: "",
       streak: 0,
+
+      savePostMortem: (id, category, notes) => {
+        set((state) => ({
+          postMortemLogs: {
+            ...state.postMortemLogs,
+            [id]: { category, notes, date: new Date().toISOString() }
+          }
+        }));
+      },
+
 
       markSolved: (id) => {
         set((state) => {
